@@ -60,7 +60,7 @@ public class DragLayout extends FrameLayout {
         //1 决定了当前child是否可以被拖拽
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return false;
+            return true;
         }
 
         //当View被捕获时，调用
@@ -87,8 +87,24 @@ public class DragLayout extends FrameLayout {
 
             return  left;
         }
+        // 4 处理当view位置改变时，要做的事情：伴随动画，更新状态，执行回调
+        @Override
+        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+            super.onViewPositionChanged(changedView, left, top, dx, dy);
+        }
+
+        //5 松手时做的事情，恢复动画
 
 
+        @Override
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            super.onViewReleased(releasedChild, xvel, yvel);
+        }
+
+        @Override
+        public void onViewDragStateChanged(int state) {
+            super.onViewDragStateChanged(state);
+        }
     };
 
 
@@ -98,7 +114,7 @@ public class DragLayout extends FrameLayout {
         if (getChildCount()<2){
             throw  new IllegalStateException("You must have 2 children at least!");
         }
-        if (!(getChildAt(0)instanceof ViewGroup)||!(getChildAt(2)instanceof  ViewGroup)){
+        if (!(getChildAt(0)instanceof ViewGroup)||!(getChildAt(1)instanceof  ViewGroup)){
             throw  new IllegalArgumentException("Your hcild must be an instance of ViewGroup!");
 
         }
